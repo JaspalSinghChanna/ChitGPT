@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with SamBot</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+    input, button { margin-top: 10px; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>Chat with SamBot</h1>
+  <div id="chat"></div>
+  <input type="text" id="userInput" placeholder="Say something..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value;
+      if (!message) return;
+
+      const chat = document.getElementById("chat");
+      chat.innerHTML += `<div><b>You:</b> ${message}</div>`;
+
+      const response = await fetch("/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Basic " + btoa("sam:happybday")
+        },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await response.json();
+      chat.innerHTML += `<div><b>SamBot:</b> ${data.reply}</div>`;
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
