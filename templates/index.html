@@ -12,7 +12,7 @@
     }
 
     h1 {
-      color: #FF9933; /* Saffron */
+      color: #FF9933;
     }
 
     #chat {
@@ -20,8 +20,35 @@
       background-color: #1e1e1e;
       padding: 10px;
       height: 300px;
-      overflow-y: scroll;
+      overflow-y: auto;
       margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      line-height: 1.5;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user {
+      background-color: #2e3c43;
+      align-self: flex-end;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .bot {
+      background-color: #263238;
+      color: #f5f5f5;
+      margin-right: auto;
+      text-align: left;
     }
 
     input {
@@ -34,7 +61,7 @@
 
     button {
       margin-top: 10px;
-      background-color: #1e88e5; /* Blue */
+      background-color: #1e88e5;
       color: white;
       border: none;
       padding: 10px;
@@ -45,15 +72,30 @@
     button:hover {
       background-color: #1565c0;
     }
+
+    #typingIndicator {
+      font-style: italic;
+      color: #888;
+      margin: 5px 0;
+    }
+
+    #emailButton {
+      margin-top: 10px;
+      background-color: #FF9933;
+    }
   </style>
 </head>
 <body>
   <h1>Chat with ChitGPT</h1>
   <div id="chat"></div>
+  <div id="typingIndicator" style="display:none;">ChitGPT is thinking...</div>
+
   <form id="chatForm" onsubmit="handleSubmit(event)">
     <input type="text" id="userInput" placeholder="Say something..." autocomplete="off" />
     <button type="submit">Send</button>
   </form>
+
+  <button id="emailButton" onclick="emailChat()">Email Me This Chat</button>
 
   <script>
     async function sendMessage() {
@@ -62,7 +104,12 @@
       if (!message) return;
 
       const chat = document.getElementById("chat");
-      chat.innerHTML += `<div><b>You:</b> ${message}</div>`;
+      chat.innerHTML += `<div class="message user"><b>You:</b><br>${message}</div>`;
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+
+      const typingIndicator = document.getElementById("typingIndicator");
+      typingIndicator.style.display = "block";
 
       const response = await fetch("/chat", {
         method: "POST",
@@ -74,14 +121,21 @@
       });
 
       const data = await response.json();
-      chat.innerHTML += `<div><b>ChitGPT:</b> ${data.reply}</div>`;
-      input.value = "";
+      typingIndicator.style.display = "none";
+
+      chat.innerHTML += `<div class="message bot"><b>ChitGPT:</b><br>${data.reply}</div>`;
       chat.scrollTop = chat.scrollHeight;
     }
 
     function handleSubmit(event) {
       event.preventDefault();
       sendMessage();
+    }
+
+    function emailChat() {
+      const chat = document.getElementById("chat").innerText;
+      const mailtoLink = `mailto:?subject=Chat with ChitGPT&body=${encodeURIComponent(chat)}`;
+      window.location.href = mailtoLink;
     }
   </script>
 </body>
