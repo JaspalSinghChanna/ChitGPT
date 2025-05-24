@@ -35,6 +35,14 @@
       text-align: center;
     }
 
+    .intro {
+      text-align: center;
+      font-style: italic;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      color: #ff9933;
+    }
+
     #chat {
       flex-grow: 1;
       border: 1px solid #444;
@@ -46,6 +54,8 @@
       flex-direction: column;
       overflow-y: auto;
       scroll-behavior: smooth;
+
+      max-height: 400px;
     }
 
     .message {
@@ -106,12 +116,6 @@
       background-color: #1565c0;
     }
 
-    #emailButton {
-      margin-top: 10px;
-      background-color: #ff9933;
-      width: 100%;
-    }
-
     /* Mobile navigation bar */
     .mobile-nav {
       display: none;
@@ -142,7 +146,7 @@
     @media (max-width: 600px) {
       .container {
         padding: 10px;
-        height: calc(100vh - 60px); /* account for nav bar */
+        height: calc(100vh - 60px);
       }
 
       #chat {
@@ -159,9 +163,10 @@
 <body>
   <div class="container">
     <h1>Chat with ChitGPT</h1>
-    <p style="text-align: center; font-style: italic; margin-top: -10px; margin-bottom: 20px; color: #FF9933;">
-    This chatbot is inspired by Chitpa — because he is always a pleasure to chat to.
+    <p class="intro">
+      This chatbot is inspired by Chitpa — because he is always a pleasure to chat to.
     </p>
+
     <div id="chat"></div>
     <div id="typingIndicator" style="display:none;">ChitGPT is thinking...</div>
 
