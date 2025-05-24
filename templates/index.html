@@ -17,15 +17,16 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      height: 100vh;
     }
 
     .container {
       flex: 1;
       display: flex;
       flex-direction: column;
+      width: 100%;
       max-width: 800px;
-      margin: auto;
+      margin: 0 auto;
       padding: 20px;
     }
 
@@ -35,7 +36,7 @@
     }
 
     #chat {
-      flex: 1;
+      flex-grow: 1;
       border: 1px solid #444;
       background-color: #1e1e1e;
       padding: 10px;
@@ -44,7 +45,6 @@
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      height: 300px;
       scroll-behavior: smooth;
     }
 
@@ -61,12 +61,10 @@
       background-color: #2e3c43;
       align-self: flex-end;
       text-align: right;
-      margin-left: auto;
     }
 
     .bot {
       background-color: #263238;
-      color: #f5f5f5;
       align-self: flex-start;
       text-align: left;
     }
@@ -114,14 +112,46 @@
       width: 100%;
     }
 
+    /* Mobile navigation bar */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1e1e1e;
+      border-top: 1px solid #333;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+    }
+
+    .mobile-nav button {
+      background: none;
+      border: none;
+      color: #f5f5f5;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .mobile-nav button:hover {
+      color: #ff9933;
+    }
+
     @media (max-width: 600px) {
-      input[type="text"], button {
-        font-size: 14px;
+      .container {
         padding: 10px;
+        height: calc(100vh - 60px); /* account for nav bar */
       }
 
       #chat {
-        height: 250px;
+        height: auto;
+        max-height: 50vh;
+      }
+
+      .mobile-nav {
+        display: flex;
       }
     }
   </style>
@@ -138,6 +168,12 @@
     </form>
 
     <button id="emailButton" onclick="emailChat()">Email Me This Chat</button>
+  </div>
+
+  <div class="mobile-nav">
+    <button onclick="scrollToTop()">Top</button>
+    <button onclick="emailChat()">Email</button>
+    <button onclick="clearChat()">Clear</button>
   </div>
 
   <script>
@@ -179,6 +215,14 @@
       const chat = document.getElementById("chat").innerText;
       const mailtoLink = `mailto:?subject=Chat with ChitGPT&body=${encodeURIComponent(chat)}`;
       window.location.href = mailtoLink;
+    }
+
+    function scrollToTop() {
+      document.getElementById("chat").scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function clearChat() {
+      document.getElementById("chat").innerHTML = "";
     }
   </script>
 </body>
