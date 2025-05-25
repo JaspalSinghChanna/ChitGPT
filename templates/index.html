@@ -54,7 +54,6 @@
       flex-direction: column;
       overflow-y: auto;
       scroll-behavior: smooth;
-
       max-height: 400px;
     }
 
@@ -116,7 +115,6 @@
       background-color: #1565c0;
     }
 
-    /* Mobile navigation bar */
     .mobile-nav {
       display: none;
       position: fixed;
@@ -199,8 +197,7 @@
       const response = await fetch("/chat", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Basic " + btoa("sam:happybday")
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ message })
       });
