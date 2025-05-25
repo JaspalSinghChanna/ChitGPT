@@ -8,7 +8,7 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 users = {
-    "chip": generate_password_hash("USA")
+    "chip": generate_password_hash("usa")
 }
 
 @auth.verify_password
