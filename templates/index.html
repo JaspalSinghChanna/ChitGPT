@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat with ChitGPT</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       background-color: #121212;
@@ -40,12 +38,12 @@
       font-style: italic;
       margin-top: -10px;
       margin-bottom: 20px;
-      color: #ff9933;
+      color: #ffd700;
     }
 
     #chat {
       flex-grow: 1;
-      border: 1px solid #444;
+      border: 2px solid #444;
       background-color: #1e1e1e;
       padding: 10px;
       margin-bottom: 10px;
@@ -86,12 +84,11 @@
 
     form {
       display: flex;
+      flex-direction: column;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
-    input[type="text"] {
-      flex: 1;
+    select, input[type="text"] {
       padding: 10px;
       background-color: #2a2a2a;
       color: #f5f5f5;
@@ -101,18 +98,17 @@
     }
 
     button {
-      background-color: #1e88e5;
+      background-color: #e53935;
       color: white;
       border: none;
       padding: 10px 15px;
       border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
-      flex-shrink: 0;
     }
 
     button:hover {
-      background-color: #1565c0;
+      background-color: #c62828;
     }
 
     .mobile-nav {
@@ -160,17 +156,21 @@
 </head>
 <body>
   <div class="container">
-    <h1>Chat with ChitGPT</h1>
-    <p class="intro">
-      This chatbot is inspired by Chitpa — because he is always a pleasure to chat to.
-    </p>
+    <h1>🤠 Chat with ChitGPT 🇺🇸</h1>
+    <p class="intro">🎉 Happy 35th Birthday, Chip! 🎉<br />You're a true original — a cowboy poet with the wisdom of an eagle and the heart of gold. 🦅🤠🔫</p>
 
     <div id="chat"></div>
-    <div id="typingIndicator" style="display:none;">ChitGPT is thinking...</div>
+    <div id="typingIndicator" style="display:none;">ChitGPT is saddling up...</div>
 
     <form id="chatForm" onsubmit="handleSubmit(event)">
-      <input type="text" id="userInput" placeholder="Say something..." autocomplete="off" />
-      <button type="submit">Send</button>
+      <select id="personaSelect">
+        <option value="default">ChitGPT (Default)</option>
+        <option value="marcus">Marcus Aurelius (Stoic Mode)</option>
+        <option value="adler">Alfred Adler (Empowerment Mode)</option>
+        <option value="birthday">Birthday Cowboy Patriot Mode 🇺🇸</option>
+      </select>
+      <input type="text" id="userInput" placeholder="Speak your piece, partner..." autocomplete="off" />
+      <button type="submit">Fire Away</button>
     </form>
   </div>
 
@@ -181,8 +181,14 @@
   </div>
 
   <script>
+    window.onload = function () {
+      const chat = document.getElementById("chat");
+      chat.innerHTML += `<div class="message bot"><b>ChitGPT:</b><br>🇺🇸 Howdy Chip! Happy 35th Birthday, partner. Let's ride through some deep thoughts, meaningful stories, and a whole lot of love 🤠🦅</div>`;
+    };
+
     async function sendMessage() {
       const input = document.getElementById("userInput");
+      const persona = document.getElementById("personaSelect").value;
       const message = input.value;
       if (!message) return;
 
@@ -199,7 +205,7 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, persona })
       });
 
       const data = await response.json();
